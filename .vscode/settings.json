@@ -1,3 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\Acer\\.virtualenvs\\Xavier-s-School-Online-Library-Website-r8qlrxlv\\Scripts\\python.exe"
+    "python.pythonPath": "C:\\Users\\Acer\\.virtualenvs\\Xavier-s-School-Online-Library-Website-r8qlrxlv\\Scripts\\python.exe",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
 }

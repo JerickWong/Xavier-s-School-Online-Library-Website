@@ -3,11 +3,23 @@ from django_mysql.models import ListTextField
 
 # Create your models here.
 
-class Book(models.Model):
+class Author(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    date_of_birth = models.DateField(null=True, blank=True)
+    date_of_death = models.DateField('Died', null=True, blank=True)
+
+    class Meta:
+        ordering = ['last_name', 'first_name']
+
+    def __str__(self):
+        return f'{self.last_name}.[self.first_name]'
+
+class Book(models.Model, ListTextField):
     title = models.CharField(max_length=200)
 
     # Many to Many Field because specs mentioned books can have more than 1 author
-    author = models.ManyToManyField(Author, on_delete=models.SET_NULL, null=True)
+    author = models.ManyToManyField('Author')
 
     publisher = models.ForeignKey('Publisher', on_delete=models.SET_NULL, null=True)
     
@@ -24,22 +36,12 @@ class Book(models.Model):
     )
 
     # ListTextField is from mysql models. If theres a lot of complications, use ArrayField from PostgreSQL instead
-    reviews = models.ListTextField(base_field=TextField(), size=10, help_text='Give a review of the book', on_delete=models.SET_NULL, null=True)
+    reviews = ListTextField(base_field=models.CharField(max_length=200), size=10, help_text='Give a review of the book')
 
     def __str__(self):
         return self.title
 
-class Author(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    date_of_birth = models.DateField(null=True, blank=True)
-    date_of_death = models.DateField('Died', null=True, blank=True)
-
-    class Meta:
-        ordering = ['last_name', 'first_name']
-
-    def __str__(self):
-        return f'{self.last_name}.[self.first_name]'
+import uuid # Required for unique book instances
 
 class BookInstance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID')
@@ -67,3 +69,9 @@ class BookInstance(models.Model):
         
     def __str__(self):
         return f'{self.id} (self.book.title)'
+
+class Publisher(models.Model):
+    name = models.CharField(max_length=32)
+
+    def __str__(self):
+        return self.name
