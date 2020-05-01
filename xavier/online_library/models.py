@@ -40,3 +40,30 @@ class Author(models.Model):
 
     def __str__(self):
         return f'{self.last_name}.[self.first_name]'
+
+class BookInstance(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID')
+
+    # if may problem, change Book Class to String 'Book'
+    book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
+    
+    LOAN_STATUS = (
+        ('M', 'Maintenance'),
+        ('O', 'On loan'),
+        ('A', 'Available'),
+        ('R', 'Reserved'),
+    )
+    
+    status = models.CharField(
+        max_length=1,
+        choices=LOAN_STATUS,
+        blank=True,
+        default='m',
+        help_text='Book availability',
+    )
+    
+    class Meta:
+        ordering = ['book']
+        
+    def __str__(self):
+        return f'{self.id} (self.book.title)'
