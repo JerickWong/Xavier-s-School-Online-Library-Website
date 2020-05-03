@@ -13,15 +13,15 @@ class Author(models.Model):
         ordering = ['last_name', 'first_name']
 
     def __str__(self):
-        return f'{self.last_name}.[self.first_name]'
+        return '%s %s' % (self.first_name, self.last_name)
 
 class Book(models.Model):
     title = models.CharField(max_length=200)
 
     # Many to Many Field because specs mentioned books can have more than 1 author
-    author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True, blank=True)
 
-    publisher = models.ForeignKey('Publisher', on_delete=models.SET_NULL, null=True)
+    publisher = models.CharField(max_length=32, null=True, blank=True)
     
     year_of_publication = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
 
@@ -36,7 +36,6 @@ class Book(models.Model):
     )
 
     # ListTextField is from mysql models. If theres a lot of complications, use ArrayField from PostgreSQL instead
-    
 
     def __str__(self):
         return self.title
@@ -75,10 +74,11 @@ class BookInstance(models.Model):
         ordering = ['book']
         
     def __str__(self):
-        return f'{self.id} (self.book.title)'
+        return '%d %s' % (self.id, self.book.title)
 
-class Publisher(models.Model):
-    name = models.CharField(max_length=32)
+# class Publisher(models.Model):
+#     book = models.ForeignKey(Book, on_delete=models.SET_NULL)
+#     name = models.CharField(max_length=32)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
