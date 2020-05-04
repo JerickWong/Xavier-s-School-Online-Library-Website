@@ -42,6 +42,40 @@ class User(AbstractBaseUser):
         return '%s %s' % (self.first_name, self.last_name)
 
 
+class AccountManager(BaseUserManager):
+    def create_account(self, email, first_name, last_name, username, password, role):
+        
+        def create_user(self, email, first_name, last_name, username, password, role):
+            user = self.model(
+                email = self.normalize_email(email)
+            )
+            user.set_password(password)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.username = username
+
+            if role == 'Book Manager':
+                user.student_teacher = False
+                user.book_manager = True
+            
+            user.save(using=self._db)
+            return user
+        
+        if not email:
+            raise ValueError("Email address field is required")
+        if not first_name:
+            raise ValueError("First name field is required")
+        if not last_name:
+            raise ValueError("Last name field is required")
+        if not username:
+            raise ValueError("Username field is required")
+        if not password:
+            raise ValueError("Password field is required")
+        if len(password) < 8 or (any(c.isalnum() for c in password)) or not (any(x.isupper() for x in password) and any(x.islower() for x in password)):
+            raise ValueError("Password must be at least 8 characters long, contain at least one upper case, at least one lower case character, and a special character. Minimum of")
+        
+        return create_user(self, email, first_name, last_name, username, password, role)             
+    
 
 class Author(models.Model):
     first_name = models.CharField(max_length=100)
