@@ -1,7 +1,47 @@
 from django.db import models
 from django_mysql.models import ListTextField
+from django.contrib.auth.models import (
+    AbstractBaseUser, BaseUserManager
+)
 
 # Create your models here.
+
+class User(AbstractBaseUser):
+
+    # AbstractBaseUser has default password already
+
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    username = models.CharField(max_length=255, unique=True)
+    email = models.EmailField(max_length=255, editable=False)
+    id = models.CharField(max_length=8, verbose_name='ID Number', primary_key=True, 
+            editable=False, help_text="After your account has been created, it can never be edited.", default='N/A')
+    REQUIRED_FIELDS = ['id'] # just when you craete a superuser, it will require you to input an id num
+
+    # Boolean
+    anonymous = models.BooleanField(default=False)
+    student_teacher = models.BooleanField(default=True)
+    book_manager = models.BooleanField(default=False)
+    admin = models.BooleanField(default=False)
+    
+    anonymous.hidden = student_teacher.hidden = book_manager.hidden = admin.hidden = True
+
+    def __str__(self):
+        return self.username
+    
+    def get_first_name(self):
+        return self.first_name
+    
+    def get_last_name(self):
+        return self.last_name
+    
+    def get_email(self):
+        return self.email
+
+    def get_full_name(self):
+        return '%s %s' % (self.first_name, self.last_name)
+
+
 
 class Author(models.Model):
     first_name = models.CharField(max_length=100)
