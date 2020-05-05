@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
                 ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
                 ('first_name', models.CharField(max_length=255)),
                 ('last_name', models.CharField(max_length=255)),
-                ('username', models.CharField(max_length=255, primary_key=True, serialize=False, unique=True)),
+                ('username', models.CharField(max_length=255, serialize=False, unique=True)),
                 ('email', models.EmailField(max_length=255)),
             ],
             options={

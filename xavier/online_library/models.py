@@ -1,5 +1,6 @@
 from django.db import models
 from django_mysql.models import ListTextField
+from django.urls import reverse # Used to generate URLs by reversing the URL patterns
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager
 )
@@ -14,9 +15,8 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=255)
     username = models.CharField(max_length=255, unique=True)
     email = models.EmailField(max_length=255, editable=False)
-    id = models.CharField(max_length=8, verbose_name='ID Number', primary_key=True, 
-            editable=False, help_text="After your account has been created, it can never be edited.", default='N/A')
-    REQUIRED_FIELDS = ['id'] # just when you craete a superuser, it will require you to input an id num
+    id_number = models.CharField(max_length=8, editable=False, help_text="After your account has been created, it can never be edited.", default='N/A')
+    REQUIRED_FIELDS = ['id_number'] # just when you craete a superuser, it will require you to input an id num
 
     # Boolean
     anonymous = models.BooleanField(default=False)
@@ -156,3 +156,4 @@ class BookInstance(models.Model):
 
 #     def __str__(self):
 #         return self.name
+
