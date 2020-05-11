@@ -67,24 +67,20 @@ def book_detail_view(request, primary_key):
 #     book = get_object_or_404(Book, pk=primary_key)
 #     return render(request, 'catalog/book_detail.html', context={'book': book})
 
-def login(request):
-    pass
+from django.contrib.auth.decorators import login_required
 
-def pwchangedone(request):
-    pass
+@login_required
+def my_view(request):
+    # You can do the same sort of thing manually by testing on request.user.is_authenticated, but the decorator is much more convenient!
+    ...
 
-def pwchange(request):
-    pass
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-def pwreset(request):
-    pass
-
-def pwresetdone(request):
-    pass
-
-def reset(request):
-    pass
-
-def resetdone(request):
-    pass
-
+class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
+    """Generic class-based view listing books on loan to current user."""
+    model = BookInstance
+    template_name ='catalog/bookinstance_list_borrowed_user.html'
+    paginate_by = 10
+    
+    def get_queryset(self):
+        return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')

@@ -12,7 +12,7 @@ urlpatterns = [
 #Add URL maps to redirect the base URL to our application
 from django.views.generic import RedirectView
 urlpatterns += [
-    path('', RedirectView.as_view(url='catalog/', permanent=True)),
+    # path('', RedirectView.as_view(url='/', permanent=False)),
 ]
 
 # Use static() to add url mapping to serve static files during development (only)
@@ -42,3 +42,7 @@ urlpatterns += [
 #     url(r'^accounts/login/$', login, name='login'),
 #     url(r'^accounts/logout/$', logout, name='logout'),
 # ]
+
+urlpatterns += [   
+    path('mybooks/', views.LoanedBooksByUserListView.as_view(), name='my-borrowed'),
+]
