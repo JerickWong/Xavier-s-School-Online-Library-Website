@@ -31,6 +31,7 @@ from django.views import generic
 
 class BookListView(generic.ListView):
     model = Book
+    paginate_by = 1
     # context_object_name = 'home_book_list'   # your own name for the list as a template variable
     # queryset = Book.objects.filter(title__icontains='war')[:5] # Get 5 books containing the title war
     # template_name = 'catalog/home_book_list.html'  # Specify your own template name/location
