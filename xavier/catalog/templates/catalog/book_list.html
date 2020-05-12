@@ -2,6 +2,8 @@
 
 {% block content %}
   <h1>Book List</h1>
+{% if perms.catalog.can_view_book or not user.is_authenticated%}
+
   {% if book_list %}
   <ul>
     {% for book in book_list %}
@@ -12,5 +14,9 @@
   </ul>
   {% else %}
     <p>There are no books in the library.</p>
-  {% endif %}       
+  {% endif %} 
+  
+{% else %}
+  <p>You don't have access to view this page.</p>
+{% endif %}
 {% endblock %}
