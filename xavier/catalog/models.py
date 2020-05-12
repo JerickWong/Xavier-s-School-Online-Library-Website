@@ -24,6 +24,8 @@ class Book(models.Model):
     # Foreign Key used because book can only have one author, but authors can have multiple books
     # Author as a string rather than object because it hasn't been declared yet in the file
     author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True)
+    publisher = models.ForeignKey('Publisher', on_delete=models.SET_NULL, null=True)
+    date_published = models.DateField('Date Published', null=True, blank=True)
     
     summary = models.TextField(max_length=1000, help_text='Enter a brief description of the book')
     isbn = models.CharField('ISBN', max_length=13, help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')
@@ -67,7 +69,7 @@ class BookInstance(models.Model):
         max_length=1,
         choices=LOAN_STATUS,
         blank=True,
-        default='m',
+        default='a',
         help_text='Book availability',
     )
 
@@ -103,3 +105,8 @@ class Author(models.Model):
         """String for representing the Model object."""
         return f'{self.last_name}, {self.first_name}'
 
+class Publisher(models.Model):
+    name = models.CharField(max_length=200, help_text='Enter name of Publisher')
+    
+    def __str__(self):
+        return f'{self.name}'
