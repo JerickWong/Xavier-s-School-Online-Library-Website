@@ -59,7 +59,7 @@ class Book(models.Model):
     
     def display_review(self):
         """Create a string for the Genre. This is required to display genre in Admin."""
-        return ', '.join(reviews.review + ' - ' + reviews.reviewer for reviews in self.reviews.all()[:3])
+        return ', '.join(reviews.review + ' - ' + reviews.reviewer.username for reviews in self.reviews.all()[:3])
     
     display_review.short_description = 'Reviews'
     display_genre.short_description = 'Genre'
