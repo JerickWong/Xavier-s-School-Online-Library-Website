@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'catalog.apps.CatalogConfig',
-    'online_library.apps.OnlineLibraryConfig',
+    # 'online_library.apps.OnlineLibraryConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -138,3 +138,7 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/catalog'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Sessions
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 5 * 60 # expire at 5 mins
