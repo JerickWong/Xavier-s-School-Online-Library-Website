@@ -109,3 +109,4 @@ def profile(request):
     model = request.user
 
     return render(request, 'profile.html', context={'user': model})
+
