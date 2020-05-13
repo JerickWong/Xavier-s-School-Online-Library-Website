@@ -1,0 +1,31 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Profile</h1>
+
+    
+    {% if user.is_authenticated %}
+        <p>First name: {{ user.first_name }}</p>
+        <p>Last name: {{ user.last_name }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>ID Number: 11717777</p>
+        <p></p>
+        
+        
+        {% if bookinstance_list %}
+        <ul>
+            {% for bookinst in bookinstance_list %} 
+            <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
+                <a href="{% url 'book-detail' bookinst.book.pk %}">{{bookinst.book.title}}</a> ({{ bookinst.due_back }})        
+            </li>
+            {% endfor %}
+        </ul>
+
+        {% else %}
+            <p>There are no books borrowed.</p>
+        {% endif %}       
+
+    {% else %}
+      <p>Login first</p>
+    {% endif %}       
+{% endblock %}

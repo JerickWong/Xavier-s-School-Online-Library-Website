@@ -104,3 +104,8 @@ class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
     
     def get_queryset(self):
         return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='r').order_by('due_back')
+
+def profile(request):
+    model = request.user
+
+    return render(request, 'profile.html', context={'user': model})

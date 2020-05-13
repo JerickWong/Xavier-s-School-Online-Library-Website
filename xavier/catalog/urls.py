@@ -26,24 +26,9 @@ urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns += [
     path('accounts/', include('django.contrib.auth.urls')),
-    # path('accounts/login/', views.login, name='login'),
-    # path('accounts/password_change/done/', views.pwchangedone, name='password_change_done'),
-    # path('accounts/password_change/', views.pwchange, name='password_change'),
-    # path('accounts/password_reset/', views.pwreset, name='password_reset'),
-    # path('accounts/password_reset/done', views.pwresetdone, name='password_reset_done'),
-    # path('accounts/reset/<uidb64>/<token>/', views.reset, name='password_reset_confirm'),
-    # path('accounts/reset/done/', views.resetdone, name='password_reset_complete'),
 ]
-
-# from django.conf.urls import url
-# # from django.contrib.auth import views as auth_views
-# from django.contrib.auth.views import login, logout
-
-# urlpatterns += [
-#     url(r'^accounts/login/$', login, name='login'),
-#     url(r'^accounts/logout/$', logout, name='logout'),
-# ]
 
 urlpatterns += [   
     path('mybooks/', views.LoanedBooksByUserListView.as_view(), name='my-borrowed'),
+    path('profile/', views.profile, name='profile'),
 ]
