@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -33,6 +34,19 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 from django.views import generic
+from django.contrib.auth.models import Permission
+
+def bookListView(request):
+    book_list = Book.objects.all()
+    if request.user.is_authenticated:
+        group_permissions = Permission.objects.filter(group__user=request.user)
+    paginate_by = 1
+
+    context = {
+        'book_list': book_list,
+    }
+
+    return render(request, 'book_list.html', context=context)
 
 class BookListView(generic.ListView):
     model = Book
@@ -48,6 +62,12 @@ class BookListView(generic.ListView):
     #     # Create any data and add it to the context
     #     context['some_data'] = 'This is just some data'
     #     return context
+    # Permissions that the user has via a group
+    # def get_queryset(self):
+    #     group_permissions = Permission.objects.filter(group__user=self.request.user)
+    #     return Book.objects.filter()
+    
+    
 
 class BookDetailView(generic.DetailView):
     model = Book
