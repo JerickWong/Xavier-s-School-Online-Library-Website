@@ -207,3 +207,29 @@ def review_book(request, pk):
     }
 
     return render(request, 'catalog/review_book.html', context)
+
+# def sign_up(request):
+#     book = get_object_or_404(Book, pk=pk)
+
+#     if request.method == 'POST':
+        
+#         form = ReviewForm(request.POST)
+
+#         if form.is_valid():
+
+#             review_text = form.cleaned_data['review']
+#             reviewer = request.user
+#             review = Review(review=review_text, reviewer=reviewer)
+#             review.save()
+#             book.reviews.add(review)
+#             book.save()
+
+#             return HttpResponseRedirect(reverse('books'))
+#     else:
+#         form = ReviewForm()
+#     context = {
+#         'form': form,
+#         'book': book,
+#     }
+
+#     return render(request, 'catalog/review_book.html', context)

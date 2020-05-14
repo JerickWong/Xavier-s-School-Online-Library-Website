@@ -44,3 +44,33 @@ class ReviewForm(forms.Form):
             raise ValidationError(_('Do not leave this field empty'))
 
         return data
+
+from django.contrib.auth.models import User
+
+# class RegistrationForm(forms.Form):
+#     first_name = forms.CharField(max_length=100, help_text="Enter your first name")
+#     last_name = forms.CharField(max_length=100, help_text="Enter your last name")
+#     username = forms.CharField(max_length=100, help_text='Enter a username (make sure that it is unique')
+#     password = forms.CharField(widget=forms.PasswordInput)
+#     confirm_password = forms.CharField(widget=forms.PasswordInput, help_text='Enter your password again')
+#     email = forms.EmailField(help_text='Enter your email address')
+#     id_num = forms.CharField(max_length=8, help_text="Enter your ID number")
+
+#     selection = (
+#         ('s', 'Student'),
+#         ('t', 'Teacher'),
+#     )
+
+#     group = forms.CharField(choices=selection, default='s')
+
+#     def clean_password(self):
+#         data = self.cleaned_data['password']
+
+#         if len(data) < 8:
+#             raise ValidationError(_('Minimum field'))
+
+#         return data
+
+#     class Meta():
+#         model = User
+#         fields = ('username','password','email')
