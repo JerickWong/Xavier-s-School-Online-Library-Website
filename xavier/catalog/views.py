@@ -150,3 +150,32 @@ def renew_book_librarian(request, pk):
     }
 
     return render(request, 'catalog/book_renew_librarian.html', context)
+
+
+from catalog.forms import BorrowBookForm
+
+def borrow_book(request, pk):
+    book_instance = get_object_or_404(BookInstance, pk=pk)
+
+    if request.method == 'POST':
+        
+        form = BorrowBookForm(request.POST)
+
+        if form.is_valid():
+
+            book_instance.borrower = request.user
+            book_instance.due_back = form.cleaned_data['due_date']
+            book_instance.status = 'r'
+            book_instance.save()
+
+            return HttpResponseRedirect(reverse('profile'))
+    
+    else:
+        form = BorrowBookForm(initial={'due_date': datetime.date.today()})
+
+    context = {
+        'form': form,
+        'book_instance': book_instance
+    }
+
+    return render(request, 'catalog/borrow_book.html', context)

@@ -11,7 +11,7 @@
   <p><strong>Language:</strong> {{ book.language }}</p>  
   <p><strong>Genre:</strong> {{ book.genre.all|join:", " }}</p>  
   <p><strong>Reviews: </strong></p>
-
+{{perms.catalog}}
   <div style="margin-left:20px;margin-top:20px">
     {% for b in book.reviews.all %}
       <p> {{ b.review }}</p> <br>
@@ -29,6 +29,8 @@
       </p>
       {% if copy.status != 'a' %}
         <p><strong>Due to be returned:</strong> {{ copy.due_back }}</p>
+      {% else %}
+        <p><a href="{% url 'borrow' copy.id %}">Borrow this book</a></p>
       {% endif %}
       <p><strong>Imprint:</strong> {{ copy.imprint }}</p>
       <p class="text-muted"><strong>Id:</strong> {{ copy.id }}</p>

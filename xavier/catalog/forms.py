@@ -20,3 +20,16 @@ class RenewBookForm(forms.Form):
 
         # Remember to always return the cleaned data.
         return data
+
+class BorrowBookForm(forms.Form):
+    due_date = forms.DateField(help_text='Enter return date')
+
+    def clean_renewal_date(self):
+        data = self.cleaned_data['renewal_date']
+        
+        # Check if a date is not in the past. 
+        if data < datetime.date.today():
+            raise ValidationError(_('Invalid date - renewal in past'))
+
+        # Remember to always return the cleaned data.
+        return data

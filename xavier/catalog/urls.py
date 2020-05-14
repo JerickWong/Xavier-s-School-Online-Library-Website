@@ -9,6 +9,7 @@ urlpatterns = [
     # path('catalog/', include('catalog.urls')),
     path('book/<int:pk>', views.BookDetailView.as_view(), name='book-detail'),
     path('book/<uuid:pk>/renew/', views.renew_book_librarian, name='renew-book-librarian'),
+    path('book/<uuid:pk>/borrow/', views.borrow_book, name='borrow')
 ]
 
 #Add URL maps to redirect the base URL to our application
