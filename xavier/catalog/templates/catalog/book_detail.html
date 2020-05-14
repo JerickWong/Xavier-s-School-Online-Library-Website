@@ -11,12 +11,16 @@
   <p><strong>Language:</strong> {{ book.language }}</p>  
   <p><strong>Genre:</strong> {{ book.genre.all|join:", " }}</p>  
   <p><strong>Reviews: </strong></p>
-{{perms.catalog}}
+
   <div style="margin-left:20px;margin-top:20px">
     {% for b in book.reviews.all %}
       <p> {{ b.review }}</p> <br>
       <p>Review by: {{ b.reviewer }}</p>
     {% endfor %}
+
+    {% if perms.catalog.add_review %}
+      <p><a href="{% url 'book-review' book.id %}">Add a review</a></p>
+    {% endif %}
   </div>
 
   <div style="margin-left:20px;margin-top:20px">

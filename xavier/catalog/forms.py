@@ -23,7 +23,7 @@ class RenewBookForm(forms.Form):
 
 class BorrowBookForm(forms.Form):
     due_date = forms.DateField(help_text='Enter return date')
-
+    
     def clean_renewal_date(self):
         data = self.cleaned_data['renewal_date']
         
@@ -32,4 +32,15 @@ class BorrowBookForm(forms.Form):
             raise ValidationError(_('Invalid date - renewal in past'))
 
         # Remember to always return the cleaned data.
+        return data
+
+class ReviewForm(forms.Form):
+    review = forms.CharField(max_length=1000, help_text='Leave your review for this book')
+    
+    def clean_review(self):
+        data = self.cleaned_data['review']
+
+        if data == '':
+            raise ValidationError(_('Do not leave this field empty'))
+
         return data

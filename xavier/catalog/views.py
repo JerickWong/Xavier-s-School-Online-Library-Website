@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 
-from catalog.models import Book, Author, BookInstance, Genre
+from catalog.models import Book, Author, BookInstance, Genre, Review
 
 def index(request):
     """View function for home page of site."""
@@ -179,3 +179,31 @@ def borrow_book(request, pk):
     }
 
     return render(request, 'catalog/borrow_book.html', context)
+
+from catalog.forms import ReviewForm
+
+def review_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+
+    if request.method == 'POST':
+        
+        form = ReviewForm(request.POST)
+
+        if form.is_valid():
+
+            review_text = form.cleaned_data['review']
+            reviewer = request.user
+            review = Review(review=review_text, reviewer=reviewer)
+            review.save()
+            book.reviews.add(review)
+            book.save()
+
+            return HttpResponseRedirect(reverse('books'))
+    else:
+        form = ReviewForm()
+    context = {
+        'form': form,
+        'book': book,
+    }
+
+    return render(request, 'catalog/review_book.html', context)
