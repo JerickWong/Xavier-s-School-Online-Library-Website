@@ -6,6 +6,8 @@
 
     
     {% if user.is_authenticated %}
+        <br>
+        <p>Username: {{ user.username }}</p>
         <p>First name: {{ user.first_name }}</p>
         <p>Last name: {{ user.last_name }}</p>
         <p>Email: {{ user.email }}</p>
@@ -15,12 +17,16 @@
         {% if user|has_group:"Student/Teacher" %} 
               <!-- <li><a href="{% url 'my-borrowed' %}">My Borrowed</a></li> -->
                 
-            {% if bookinstance_list %}
+            {% if bookinstance %}
             <ul>
-                {% for bookinst in bookinstance_list %} 
-                <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
-                    <a href="{% url 'book-detail' bookinst.book.pk %}">{{bookinst.book.title}}</a> ({{ bookinst.due_back }})        
-                </li>
+                <p>Books Borrowed:</p>
+                {% for bookinst in bookinstance %} 
+                    {% if bookinst.borrower == user %}
+                    <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
+                        <a href="{% url 'book-detail' bookinst.book.pk %}">{{bookinst.book.title}}</a> ({{ bookinst.due_back }})        
+                        {% if perms.catalog.can_mark_returned %}- <a href="{% url 'renew-book-librarian' bookinst.id %}">Renew</a>  {% endif %}
+                    </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
 
