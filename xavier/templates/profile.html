@@ -16,10 +16,11 @@
         
         {% if user|has_group:"Student/Teacher" %} 
               <!-- <li><a href="{% url 'my-borrowed' %}">My Borrowed</a></li> -->
-                
+            
+            <br>
             {% if bookinstance %}
-            <ul>
-                <p>Books Borrowed:</p>
+            <p>Books Borrowed:</p>
+            <ul>                
                 {% for bookinst in bookinstance %} 
                     {% if bookinst.borrower == user %}
                     <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
@@ -33,6 +34,20 @@
             {% else %}
                 <p>There are no books borrowed.</p>
             {% endif %}       
+
+            <br>
+            <p>Books Reviewed:</p>             
+            {% for b in booksreviewed %}
+                {%  for r in b.reviews.all %}
+                    {% if r.reviewer == user %}
+                    <ul>
+                        <p>Title: {{ b.title }}</p>
+                        <li>{{ r.review }}</li>
+                    </ul>
+                    {% endif %}
+                {%  endfor %}
+            {% endfor %}
+            
         {% endif %}
     {% else %}
       <p>Login first</p>

@@ -107,8 +107,14 @@ class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
 
 def profile(request):
     bookinstance = BookInstance.objects.all()
+    booksreviewed = Book.objects.all()
 
-    return render(request, 'profile.html', context={'bookinstance': bookinstance})
+    context = {
+        'bookinstance': bookinstance,
+        'booksreviewed': booksreviewed
+    }
+
+    return render(request, 'profile.html', context=context)
 
 
 import datetime

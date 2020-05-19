@@ -1,0 +1,3 @@
+pipenv shell
+cd xavier
+python manage.py runserver
