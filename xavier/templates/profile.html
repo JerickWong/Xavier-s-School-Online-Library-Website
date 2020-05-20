@@ -12,7 +12,7 @@
         <p>Last name: {{ user.last_name }}</p>
         <p>Email: {{ user.email }}</p>
         <p>ID Number: 11717777</p>
-        <p><a href="{% url 'change-password' %}">Change password?</a></p>
+        <p><a href="{% url 'password_change' %}">Change password?</a></p>
         <p></p>
         
         {% if user|has_group:"Student/Teacher" %} 
