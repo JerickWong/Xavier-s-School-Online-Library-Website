@@ -39,9 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'axes',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE = [    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -49,6 +50,20 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # AxesMiddleware should be the last middleware in the MIDDLEWARE list.
+    # It only formats user lockout messages and renders Axes lockout responses
+    # on failed user authentication attempts from login views.
+    # If you do not want Axes to override the authentication response
+    # you can skip installing the middleware and use your own views.
+    'axes.middleware.AxesMiddleware',
+]
+
+AUTHENTICATION_BACKENDS = [
+    # AxesBackend should be the first backend in the AUTHENTICATION_BACKENDS list.
+    'axes.backends.AxesBackend',
+
+    # Django ModelBackend is the default authentication backend.
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 ROOT_URLCONF = 'xavier.urls'
@@ -142,3 +157,17 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Sessions
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 5 * 60 # expire at 5 mins
+
+
+# Axes has the following warnings codes built in:
+
+# axes.W001 for invalid CACHES configuration.
+# axes.W002 for invalid MIDDLEWARE configuration.
+# axes.W003 for invalid AUTHENTICATION_BACKENDS configuration.
+# axes.W004 for deprecated use of AXES_* setting flags.
+
+# To disable the unnecessary warnings of axes
+SILENCED_SYSTEM_CHECKS = ['axes.W003']
+
+# To disable/enable axes
+# AXES_ENABLED = False
