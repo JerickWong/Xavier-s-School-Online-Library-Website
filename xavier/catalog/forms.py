@@ -1,4 +1,5 @@
 import datetime
+import re
 
 from django import forms
 from django.core.exceptions import ValidationError
@@ -47,30 +48,59 @@ class ReviewForm(forms.Form):
 
 from django.contrib.auth.models import User
 
-# class RegistrationForm(forms.Form):
-#     first_name = forms.CharField(max_length=100, help_text="Enter your first name")
-#     last_name = forms.CharField(max_length=100, help_text="Enter your last name")
-#     username = forms.CharField(max_length=100, help_text='Enter a username (make sure that it is unique')
-#     password = forms.CharField(widget=forms.PasswordInput)
-#     confirm_password = forms.CharField(widget=forms.PasswordInput, help_text='Enter your password again')
-#     email = forms.EmailField(help_text='Enter your email address')
-#     id_num = forms.CharField(max_length=8, help_text="Enter your ID number")
+class RegistrationForm(forms.ModelForm):
+    first_name = forms.CharField(max_length=100, help_text="Enter your first name")
+    last_name = forms.CharField(max_length=100, help_text="Enter your last name")
+    username = forms.CharField(max_length=100, help_text='Enter a username (make sure that it is unique)')
+    password = forms.CharField(widget=forms.PasswordInput)
+    confirm_password = forms.CharField(widget=forms.PasswordInput, help_text='Enter your password again')
+    email = forms.EmailField(help_text='Enter your email address')
+    id_num = forms.CharField(max_length=8, help_text="Enter your ID number")
 
-#     selection = (
-#         ('s', 'Student'),
-#         ('t', 'Teacher'),
-#     )
+    selection = (
+        ('s', 'Student'),
+        ('t', 'Teacher'),
+    )
 
-#     group = forms.CharField(choices=selection, default='s')
+    group = forms.ChoiceField(choices=selection)
+    # TODO put them in students/teachers group
 
-#     def clean_password(self):
-#         data = self.cleaned_data['password']
+    def clean_confirm_password(self):
+        cleaned_data = super().clean()
 
-#         if len(data) < 8:
-#             raise ValidationError(_('Minimum field'))
+        data = self.cleaned_data.get('password')
+        data2 = self.cleaned_data.get('confirm_password')
 
-#         return data
+        string_check= re.compile('[@_!#$%^&*()<>?/\|}{~:]')         
 
-#     class Meta():
-#         model = User
-#         fields = ('username','password','email')
+        rules = [lambda data: any(x.isupper() for x in data), # must have at least one uppercase
+        lambda data: any(x.islower() for x in data),  # must have at least one lowercase
+        lambda data: any(x.isdigit() for x in data),  # must have at least one digit
+        lambda data: len(data) >= 8,                  # must be at least 8 characters
+        lambda data: string_check.search(data) != None,  # must have at least one special character
+        lambda data: data == data2,  # must be equal to the confirm password
+        ]
+
+        print(data, data2)
+
+        if all(rule(data) for rule in rules):
+            return data
+        else:
+            err = 'Password must have '
+
+            if not any(x.isupper() for x in data):
+                err += 'at least one uppercase, '
+            if not any(x.isdigit() for x in data):
+                err += 'at least one lowercase, '
+            if not len(data) >= 8:
+                err += 'at least 8 characters, '
+            if string_check.search(data) == None:
+                err += 'at least one special character, '
+            if data != data2:
+                err += 'and the same with confirm password'
+            raise ValidationError (_(err))
+        
+
+    class Meta():
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password', 'confirm_password', 'id_num')

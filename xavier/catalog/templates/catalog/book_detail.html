@@ -14,8 +14,9 @@
 
   <div style="margin-left:20px;margin-top:20px">
     {% for b in book.reviews.all %}
-      <p> {{ b.review }}</p> <br>
+      <p> {{ b.review }}</p>
       <p>Review by: {{ b.reviewer }}</p>
+      <br>
     {% endfor %}
 
     {% if perms.catalog.add_review %}

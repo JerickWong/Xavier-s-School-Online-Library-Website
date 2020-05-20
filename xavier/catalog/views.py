@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 
 # Create your views here.
 
@@ -72,20 +73,12 @@ class BookListView(generic.ListView):
 class BookDetailView(generic.DetailView):
     model = Book
 
-def book_detail_view(request, primary_key):
-    try:
-        book = Book.objects.get(pk=primary_key)
-    except Book.DoesNotExist:
-        raise Http404('Book does not exist')
-    
-    return render(request, 'catalog/book_detail.html', context={'book': book})
-
 # alternatively
 # from django.shortcuts import get_object_or_404
 
-# def book_detail_view(request, primary_key):
-#     book = get_object_or_404(Book, pk=primary_key)
-#     return render(request, 'catalog/book_detail.html', context={'book': book})
+def book_detail_view(request, primary_key):
+    book = get_object_or_404(Book, pk=primary_key)
+    return render(request, 'catalog/book_detail.html', context={'book': book})
 
 from django.contrib.auth.decorators import login_required
 
@@ -121,7 +114,6 @@ import datetime
 
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from catalog.forms import RenewBookForm
@@ -143,7 +135,7 @@ def renew_book_librarian(request, pk):
             book_instance.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect(reverse('index') )
+            return redirect('index')
 
     # If this is a GET (or any other method) create the default form.
     else:
@@ -174,7 +166,7 @@ def borrow_book(request, pk):
             book_instance.status = 'r'
             book_instance.save()
 
-            return HttpResponseRedirect(reverse('profile'))
+            return redirect('profile')
     
     else:
         form = BorrowBookForm(initial={'due_date': datetime.date.today()})
@@ -185,6 +177,7 @@ def borrow_book(request, pk):
     }
 
     return render(request, 'catalog/borrow_book.html', context)
+
 
 from catalog.forms import ReviewForm
 
@@ -204,7 +197,7 @@ def review_book(request, pk):
             book.reviews.add(review)
             book.save()
 
-            return HttpResponseRedirect(reverse('books'))
+            return redirect('books')
     else:
         form = ReviewForm()
     context = {
@@ -214,28 +207,37 @@ def review_book(request, pk):
 
     return render(request, 'catalog/review_book.html', context)
 
-# def sign_up(request):
-#     book = get_object_or_404(Book, pk=pk)
 
-#     if request.method == 'POST':
+from catalog.forms import RegistrationForm
+from django.contrib.auth import login, authenticate
+
+def sign_up(request):
+
+    if request.method == 'POST':
         
-#         form = ReviewForm(request.POST)
+        form = RegistrationForm(request.POST)
 
-#         if form.is_valid():
+        if form.is_valid():                        
 
-#             review_text = form.cleaned_data['review']
-#             reviewer = request.user
-#             review = Review(review=review_text, reviewer=reviewer)
-#             review.save()
-#             book.reviews.add(review)
-#             book.save()
+            # Saving user to the database
+            user = form.save()
+            user.refresh_from_db()
+            raw_password = form.cleaned_data.get('password')
+            user.set_password(raw_password)
+            user.save()
 
-#             return HttpResponseRedirect(reverse('books'))
-#     else:
-#         form = ReviewForm()
-#     context = {
-#         'form': form,
-#         'book': book,
-#     }
+            # Automatically signing the user up
+            raw_password = form.cleaned_data.get('password')
+            # user = authenticate(username=user.username, password=raw_password)
+            login(request, user)
 
-#     return render(request, 'catalog/review_book.html', context)
+            # Setting user to Student / Teacher Group
+            group = Group.objects.get(name='Student/Teacher') 
+            group.user_set.add(user)            
+            
+            return redirect('index')
+
+    else:
+        form = RegistrationForm(initial={'group': 's'})
+
+    return render(request, 'registration/signup.html', {'form': form})

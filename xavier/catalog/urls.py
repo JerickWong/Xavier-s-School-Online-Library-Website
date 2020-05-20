@@ -11,7 +11,7 @@ urlpatterns = [
     path('book/<uuid:pk>/renew/', views.renew_book_librarian, name='renew-book-librarian'),
     path('book/<uuid:pk>/borrow/', views.borrow_book, name='borrow'),
     path('book/<int:pk>/review/', views.review_book, name='book-review'),
-    # path('accounts/signup/', views.sign_up, name='sign-up')
+    path('accounts/signup/', views.sign_up, name='sign-up')
 ]
 
 #Add URL maps to redirect the base URL to our application
