@@ -90,14 +90,16 @@ class RegistrationForm(forms.ModelForm):
 
             if not any(x.isupper() for x in data):
                 err += 'at least one uppercase, '
-            if not any(x.isdigit() for x in data):
+            if not any(x.islower() for x in data):
                 err += 'at least one lowercase, '
+            if not any(x.isdigit() for x in data):
+                err += 'at least one number, '
             if not len(data) >= 8:
                 err += 'at least 8 characters, '
             if string_check.search(data) == None:
                 err += 'at least one special character, '
             if data != data2:
-                err += 'and the same with confirm password'
+                err += 'and matches the confirm password'
             raise ValidationError (_(err))
         
 
