@@ -241,3 +241,14 @@ def sign_up(request):
         form = RegistrationForm(initial={'group': 's'})
 
     return render(request, 'registration/signup.html', {'form': form})
+
+def return_book(request, pk):
+    book_instance = get_object_or_404(BookInstance, pk=pk)
+
+    book_instance.borrower = None
+    book_instance.due_back = None
+    book_instance.status = 'a'
+
+    book_instance.save()
+
+    return render(request, 'index.html', {})
