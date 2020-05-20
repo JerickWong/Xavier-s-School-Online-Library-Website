@@ -41,7 +41,7 @@ def bookListView(request):
     book_list = Book.objects.all()
     if request.user.is_authenticated:
         group_permissions = Permission.objects.filter(group__user=request.user)
-    paginate_by = 1
+    paginate_by = 5
 
     context = {
         'book_list': book_list,
@@ -51,7 +51,7 @@ def bookListView(request):
 
 class BookListView(generic.ListView):
     model = Book
-    paginate_by = 1
+    paginate_by = 5
     # context_object_name = 'home_book_list'   # your own name for the list as a template variable
     # queryset = Book.objects.filter(title__icontains='war')[:5] # Get 5 books containing the title war
     # template_name = 'catalog/home_book_list.html'  # Specify your own template name/location
