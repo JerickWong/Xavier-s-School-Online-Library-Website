@@ -65,11 +65,12 @@ class RegistrationForm(forms.ModelForm):
     group = forms.ChoiceField(choices=selection)
     # TODO put them in students/teachers group
 
-    def clean_confirm_password(self):
+    def clean_id_num(self):
         cleaned_data = super().clean()
 
         data = self.cleaned_data.get('password')
         data2 = self.cleaned_data.get('confirm_password')
+        data3 = self.cleaned_data.get('id_num')
 
         string_check= re.compile('[@_!#$%^&*()<>?/\|}{~:]')         
 
@@ -78,29 +79,34 @@ class RegistrationForm(forms.ModelForm):
         lambda data: any(x.isdigit() for x in data),  # must have at least one digit
         lambda data: len(data) >= 8,                  # must be at least 8 characters
         lambda data: string_check.search(data) != None,  # must have at least one special character
-        lambda data: data == data2,  # must be equal to the confirm password
+        # lambda data: data == data2,  # must be equal to the confirm password
         ]
 
         print(data, data2)
-
-        if all(rule(data) for rule in rules):
-            return data
+        
+        if not all(rule(data) for rule in rules):
+            raise ValidationError(_('Password must have at least one uppercase, one lowercase and one special character with a minimum of 8 characters.'))            
+        elif data != data2:
+            raise ValidationError(_('Password and confirm password must match.'))
+        if data3.isdigit():
+            raise ValidationError(_('Enter numbers only on the ID Number field.'))
         else:
-            err = 'Password must have '
+            return data
+            # err = 'Password must have at least '
 
-            if not any(x.isupper() for x in data):
-                err += 'at least one uppercase, '
-            if not any(x.islower() for x in data):
-                err += 'at least one lowercase, '
-            if not any(x.isdigit() for x in data):
-                err += 'at least one number, '
-            if not len(data) >= 8:
-                err += 'at least 8 characters, '
-            if string_check.search(data) == None:
-                err += 'at least one special character, '
-            if data != data2:
-                err += 'and matches the confirm password'
-            raise ValidationError (_(err))
+            # if not any(x.isupper() for x in data):
+            #     err += 'one uppercase, '
+            # if not any(x.islower() for x in data):
+            #     err += 'one lowercase, '
+            # if not any(x.isdigit() for x in data):
+            #     err += 'one number, '
+            # if not len(data) >= 8:
+            #     err += '8 characters, '
+            # if string_check.search(data) == None:
+            #     err += 'one special character, '
+            # if data != data2:
+            #     err += 'and matches the confirm password,'
+            # raise ValidationError (_(err))
         
 
     class Meta():
