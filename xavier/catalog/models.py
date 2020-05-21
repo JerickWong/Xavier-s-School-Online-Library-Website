@@ -124,3 +124,11 @@ class Publisher(models.Model):
     
     def __str__(self):
         return f'{self.name}'
+
+class BorrowedBefore(models.Model):
+    borrower = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True, blank=False)
+    # date = models.DateField('Date Borrowed', auto_now=True)
+
+    def __str__(self):
+        return f'{self.book.title}'

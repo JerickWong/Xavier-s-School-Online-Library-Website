@@ -22,6 +22,15 @@
             {% if bookinstance %}
             <p>Books Borrowed:</p>
             <ul>                
+                {% for borrowed in borrowedbefore %}
+                    {% if borrowed.borrower == user %}
+                    <li class='text-secondary'>
+                        {{ borrowed.book.title }}
+                    </li>
+                    {% endif %}
+
+                {% endfor %}
+
                 {% for bookinst in bookinstance %} 
                     {% if bookinst.borrower == user %}
                     <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">

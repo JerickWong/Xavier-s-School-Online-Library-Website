@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 
 # Create your views here.
 
-from catalog.models import Book, Author, BookInstance, Genre, Review
+from catalog.models import Book, Author, BookInstance, Genre, Review, BorrowedBefore
 
 def index(request):
     """View function for home page of site."""
@@ -101,10 +101,12 @@ class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
 def profile(request):
     bookinstance = BookInstance.objects.all()
     booksreviewed = Book.objects.all()
+    borrowedbefore = BorrowedBefore.objects.all()
 
     context = {
         'bookinstance': bookinstance,
-        'booksreviewed': booksreviewed
+        'booksreviewed': booksreviewed,
+        'borrowedbefore': borrowedbefore
     }
 
     return render(request, 'profile.html', context=context)
@@ -161,9 +163,11 @@ def borrow_book(request, pk):
 
         if form.is_valid():
 
+            due_date = form.cleaned_data['due_date']
             book_instance.borrower = request.user
-            book_instance.due_back = form.cleaned_data['due_date']
+            book_instance.due_back = due_date
             book_instance.status = 'r'
+            
             book_instance.save()
 
             return redirect('profile')
@@ -248,7 +252,11 @@ def return_book(request, pk):
     book_instance.borrower = None
     book_instance.due_back = None
     book_instance.status = 'a'
+    book = book_instance.book
+
+    borrowed_before = BorrowedBefore(borrower=request.user, book=book)
+    borrowed_before.save()
 
     book_instance.save()
 
-    return render(request, 'index.html', {})
+    return render(request, 'profile', {})
