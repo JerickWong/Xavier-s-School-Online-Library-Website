@@ -259,4 +259,4 @@ def return_book(request, pk):
 
     book_instance.save()
 
-    return render(request, 'index.html', {})
+    return render(request, 'catalog/return_successfully.html', {})

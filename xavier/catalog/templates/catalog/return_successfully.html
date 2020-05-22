@@ -1,0 +1,10 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+  {% if user.is_athenticated or perms.catalog.view_bookinstance %}
+    <p>Book has been returned successfully!</p>
+  {% else %}
+    <p>Something went wrong. Click <a href="url 'index' ">here</a> to go to the home page</p>
+  {% endif %}
+{% endblock %}
