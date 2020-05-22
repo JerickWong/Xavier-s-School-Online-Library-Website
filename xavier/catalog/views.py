@@ -233,7 +233,7 @@ def sign_up(request):
             # Automatically signing the user up
             raw_password = form.cleaned_data.get('password')
             # user = authenticate(username=user.username, password=raw_password)
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
 
             # Setting user to Student / Teacher Group
             group = Group.objects.get(name='Student/Teacher') 
@@ -259,4 +259,4 @@ def return_book(request, pk):
 
     book_instance.save()
 
-    return render(request, 'profile', {})
+    return render(request, 'index.html', {})

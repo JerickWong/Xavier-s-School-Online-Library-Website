@@ -80,15 +80,13 @@ class RegistrationForm(forms.ModelForm):
         lambda data: len(data) >= 8,                  # must be at least 8 characters
         lambda data: string_check.search(data) != None,  # must have at least one special character
         # lambda data: data == data2,  # must be equal to the confirm password
-        ]
-
-        print(data, data2)
+        ]        
         
         if not all(rule(data) for rule in rules):
             raise ValidationError(_('Password must have at least one uppercase, one lowercase and one special character with a minimum of 8 characters.'))            
         elif data != data2:
             raise ValidationError(_('Password and confirm password must match.'))
-        if data3.isdigit():
+        if not data3.isdigit():
             raise ValidationError(_('Enter numbers only on the ID Number field.'))
         else:
             return data
