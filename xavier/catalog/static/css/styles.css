@@ -4,6 +4,9 @@
     list-style: none;
 }
 
+.col-lg-offset-2 ul {
+  list-style: none;
+}
 /**
 * Template Name: Instant
 * Template URL: https://templatemag.com/instant-bootstrap-personal-template/
@@ -223,8 +226,8 @@ h1, h2, h3, h4, h5, h6 {
 	padding-top: 250px;
 	text-align:center;
 	background-attachment: relative;
-	background-position: center center;
-	min-height: 550px;
+	/* background-position: center center; */
+	min-height: 580px;
 	width: 100%;
 
     -webkit-background-size: 100%;

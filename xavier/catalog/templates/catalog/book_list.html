@@ -1,6 +1,19 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+
+<div id="workwrap">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-lg-offset-3">
+        <h4>Online Library</h4>
+        <h1>BOOKS</h1>
+      </div>
+    </div>
+  </div>
+  <!-- /container -->
+</div>
+
   <h1>Book List</h1>
   <!-- <p>{{perms.catalog}}</p> -->
 {% if not user.is_authenticated or perms.catalog.view_book %}

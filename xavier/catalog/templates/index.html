@@ -1,15 +1,32 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Xavier's School Online Library</h1>
-  <p>Welcome to Xavier's School Online Library, a website developed by <em>SECURDE S16</em>!</p>
-  <h2>Dynamic content</h2>
-  <p>The library has the following record counts:</p>
-  <ul>
-    <li><strong>Books:</strong> {{ num_books }}</li>
-    <li><strong>Copies:</strong> {{ num_instances }}</li>
-    <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
-    <li><strong>Authors:</strong> {{ num_authors }}</li>
-  </ul>
+
+<div id="headerwrap">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-lg-offset-3">
+        <h4>Welcome,</h4>
+        <h1>Xavier's School</h1>
+        <h4>Online Library Database</h4>
+      </div>
+    </div>
+  </div>
+  <!-- /container -->
+</div>
+<div class="container">
+  <div class="row centered mt mb">
+    <div class="col-lg-8 col-lg-offset-2">
+      <h1>Xavier's School Online Library</h1>
+        <p>The library has the following record counts:</p>
+        <ul>
+          <li><strong>Books:</strong> {{ num_books }}</li>
+          <li><strong>Copies:</strong> {{ num_instances }}</li>
+          <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
+          <li><strong>Authors:</strong> {{ num_authors }}</li>
+        </ul>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
