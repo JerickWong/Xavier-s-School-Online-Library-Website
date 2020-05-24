@@ -25,7 +25,7 @@
                 {% for borrowed in borrowedbefore %}
                     {% if borrowed.borrower == user %}
                     <li class='text-secondary'>
-                        {{ borrowed.book.title }}
+                        {{ borrowed.book.title }} (Returned)
                     </li>
                     {% endif %}
 

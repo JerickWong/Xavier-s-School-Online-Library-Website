@@ -160,6 +160,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #social {
+	margin-top: 100px;
 	padding-top: 50px;
 	padding-bottom: 50px;
 	background-color: #f2f2f2;

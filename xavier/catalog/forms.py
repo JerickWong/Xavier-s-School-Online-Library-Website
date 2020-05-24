@@ -50,20 +50,20 @@ class ReviewForm(forms.Form):
 from django.contrib.auth.models import User
 
 class RegistrationForm(forms.ModelForm):
-    first_name = forms.CharField(max_length=100, help_text="Enter your first name")
-    last_name = forms.CharField(max_length=100, help_text="Enter your last name")
-    username = forms.CharField(max_length=100, help_text='Enter a username (make sure that it is unique)')
-    password = forms.CharField(widget=forms.PasswordInput)
-    confirm_password = forms.CharField(widget=forms.PasswordInput, help_text='Enter your password again')
-    email = forms.EmailField(help_text='Enter your email address')
-    id_num = forms.CharField(max_length=8, help_text="Enter your ID number")
+    first_name = forms.CharField(max_length=100, help_text="Enter your first name", widget=forms.TextInput(attrs={'class' : 'input'}))
+    last_name = forms.CharField(max_length=100, help_text="Enter your last name", widget=forms.TextInput(attrs={'class' : 'input'}))
+    username = forms.CharField(max_length=100, help_text='Enter a username (make sure that it is unique)', widget=forms.TextInput(attrs={'class' : 'input'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'input'}))
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'input'}), help_text='Enter your password again')
+    email = forms.EmailField(help_text='Enter your email address', widget=forms.TextInput(attrs={'class' : 'input'}))
+    id_num = forms.CharField(max_length=8, help_text="Enter your ID number", widget=forms.TextInput(attrs={'class' : 'input'}))
 
-    selection = (
-        ('s', 'Student'),
-        ('t', 'Teacher'),
-    )
+    # selection = (
+    #     ('s', 'Student'),
+    #     ('t', 'Teacher'),
+    # )
 
-    group = forms.ChoiceField(choices=selection)
+    # group = forms.ChoiceField(choices=selection)
     # TODO put them in students/teachers group
 
     def clean_id_num(self):
@@ -120,3 +120,9 @@ class MyAuthenticationForm(AuthenticationForm):
         super(MyAuthenticationForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'input'
+    
+    def confirm_login_allowed(self, user):
+        if not user:
+            raise forms.ValidationError(_('User does not exist'))
+        elif not user.is_active or not user.is_validated:
+            raise forms.ValidationError('There was a problem with your login.', code='invalid_login')

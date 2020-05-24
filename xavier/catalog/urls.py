@@ -15,10 +15,12 @@ urlpatterns = [
     path('book/<uuid:pk>/borrow/', views.borrow_book, name='borrow'),
     path('book/<uuid:pk>/return/', views.return_book, name='return-book'),
     path('book/<int:pk>/review/', views.review_book, name='book-review'),
-    path('accounts/signup/', views.sign_up, name='sign-up'),
+    
     path('about/', views.about, name='about'),
-    path('login/', views.Login.as_view(template_name="registration/login.html", authentication_form=MyAuthenticationForm
-            ), name='auth-login'),
+    # path('login/', views.sign_up, name='sign-up'),
+    path('login/', views.auth_login, name='auth-login'),
+    # path('accounts/signup/', views.sign_up, name='sign-up'),
+    
     # url(r'^about', TemplateView.as_view(template_name='../catalog/templates/about_us.html'), name='about'),
     # (r'^about', 'django.views.generic.simple.direct_to_template', {'template': '../catalog/templates/about_us.html'}),
 ]

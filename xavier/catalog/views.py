@@ -220,7 +220,7 @@ from django.contrib.auth import login, authenticate
 
 def sign_up(request):
 
-    if request.method == 'POST':
+    if request.method == 'POST' and 'sign-up' in request.POST:
         
         form = RegistrationForm(request.POST)
 
@@ -247,7 +247,7 @@ def sign_up(request):
     else:
         form = RegistrationForm(initial={'group': 's'})
 
-    return render(request, 'registration/signup.html', {'form': form})
+    return render(request, 'registration/login.html', {'form': form})
 
 def return_book(request, pk):
     book_instance = get_object_or_404(BookInstance, pk=pk)
@@ -271,14 +271,67 @@ def about(request):
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.cache import never_cache
 
-@csrf_protect
-@never_cache
-def auth_login(request, template_name='registration/login.html',
-          redirect_field_name=REDIRECT_FIELD_NAME,
-          authentication_form=MyAuthenticationForm):
-          pass
+
+# def auth_login(request, template_name='registration/login.html',
+#           redirect_field_name=REDIRECT_FIELD_NAME,
+#           authentication_form=MyAuthenticationForm):
+#           pass
 
 from django.contrib.auth.views import LoginView
 
-class Login(LoginView):
-    template_name = 'login.html'
+@csrf_protect
+@never_cache
+def auth_login(request):
+    if request.method == 'POST':
+        loginform = MyAuthenticationForm(request.POST)
+        signupform = RegistrationForm(request.POST)
+        
+        if loginform.is_valid() and 'login' in request.POST:
+            
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(request=request, username=username, password=password)
+
+            if user is not None:
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')                        
+                return redirect('index')
+            else:                
+                render(request, 'registration/login.html', {'error': 'Wrong credentials'})
+        
+        elif signupform.is_valid()  and 'sign-up' in request.POST:
+            # Saving user to the database
+            user = signupform.save()
+            user.refresh_from_db()
+            raw_password = signupform.cleaned_data.get('password')
+            user.set_password(raw_password)
+            user.save()
+
+            # Automatically signing the user up
+            raw_password = signupform.cleaned_data.get('password')
+            # user = authenticate(username=user.username, password=raw_password)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+
+            # Setting user to Student / Teacher Group
+            group = Group.objects.get(name='Student/Teacher') 
+            group.user_set.add(user)            
+            
+            return redirect('index')
+
+    else:
+        loginform = MyAuthenticationForm()
+        signupform = RegistrationForm()
+    
+    return render(request, 'registration/login.html', {'loginform': loginform, 'signupform': signupform})
+
+# class Login(LoginView):
+#     template_name = 'login.html'
+
+#     def get_success_url(self):
+# 	    """Detect the submit button used and act accordingly"""
+#         if 'login' in self.request.POST:
+#             url = reverse_lazy('login')
+#         else:
+#             url = reverse_lazy('model-detail', kwargs={
+# 	             //...
+#             })
+#         return url
