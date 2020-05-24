@@ -1,6 +1,7 @@
 import datetime
 import re
 
+from django.contrib.auth.forms import AuthenticationForm
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
@@ -110,3 +111,12 @@ class RegistrationForm(forms.ModelForm):
     class Meta():
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password', 'confirm_password', 'id_num')
+
+class MyAuthenticationForm(AuthenticationForm):
+    username = forms.CharField(label=_("Username"), max_length=30, widget=forms.TextInput(attrs={'class' : 'input'}))
+    password = forms.CharField(label=_("Password"), widget=forms.PasswordInput(attrs={'class' : 'input'}))
+
+    def __init__(self, *args, **kwargs):
+        super(MyAuthenticationForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'input'

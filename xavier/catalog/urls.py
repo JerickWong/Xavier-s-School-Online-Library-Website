@@ -4,6 +4,7 @@ from django.conf.urls import url
 from . import views
 from django.contrib.auth.decorators import login_required, permission_required
 from django.views.generic import TemplateView
+from catalog.forms import MyAuthenticationForm
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -16,6 +17,8 @@ urlpatterns = [
     path('book/<int:pk>/review/', views.review_book, name='book-review'),
     path('accounts/signup/', views.sign_up, name='sign-up'),
     path('about/', views.about, name='about'),
+    path('login/', views.Login.as_view(template_name="registration/login.html", authentication_form=MyAuthenticationForm
+            ), name='auth-login'),
     # url(r'^about', TemplateView.as_view(template_name='../catalog/templates/about_us.html'), name='about'),
     # (r'^about', 'django.views.generic.simple.direct_to_template', {'template': '../catalog/templates/about_us.html'}),
 ]

@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
+from django.utils.decorators import method_decorator
+from catalog.forms import MyAuthenticationForm
+from django.contrib.auth import REDIRECT_FIELD_NAME
 
 # Create your views here.
 
@@ -263,3 +266,19 @@ def return_book(request, pk):
 
 def about(request):
     return render(request, 'about.html', {})
+
+
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.cache import never_cache
+
+@csrf_protect
+@never_cache
+def auth_login(request, template_name='registration/login.html',
+          redirect_field_name=REDIRECT_FIELD_NAME,
+          authentication_form=MyAuthenticationForm):
+          pass
+
+from django.contrib.auth.views import LoginView
+
+class Login(LoginView):
+    template_name = 'login.html'

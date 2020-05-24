@@ -48,7 +48,7 @@
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
-          <li class="active"><a href="{% url 'index' %}">Home</a></li>
+          <li><a href="{% url 'index' %}">Home</a></li>
           <li><a href="{% url 'about' %}">About</a></li>
           <li><a href="{% url 'books' %}" class="smoothscroll">Books</a></li>
           {% if user.is_authenticated %}
@@ -57,7 +57,7 @@
             <!-- <li><a href="{% url 'profile' %}">Profile</a></li> -->
             <li><a href="{% url 'logout'%}?next=/{{request.path}}">Logout</a></li>   
         {% else %}
-            <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>   
+            <li><a href="{% url 'auth-login'%}?next={{request.path}}">Login</a></li>   
         {% endif %} 
         </ul>
         
