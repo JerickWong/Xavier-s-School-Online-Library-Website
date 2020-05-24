@@ -2,7 +2,17 @@
 {% load custom_tags %}
 
 {% block content %}
-    <h1>Profile</h1>
+<div id="workwrap">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-lg-offset-3">
+          <h4>{{ user.username }}'s</h4>
+          <h1>Profile</h1>
+        </div>
+      </div>
+    </div>
+    <!-- /container -->
+  </div>
 
     
     {% if user.is_authenticated %}
@@ -12,7 +22,7 @@
         <p>Last name: {{ user.last_name }}</p>
         <p>Email: {{ user.email }}</p>
         <p>ID Number: 11717777</p>
-        <p><a href="{% url 'password_change' %}">Change password?</a></p>
+        <p class="clickable"><a href="{% url 'password_change' %}">Change password?</a></p>
         <p></p>
         
         {% if user|has_group:"Student/Teacher" %} 
@@ -35,8 +45,8 @@
                     {% if bookinst.borrower == user %}
                     <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
                         <a href="{% url 'book-detail' bookinst.book.pk %}">{{bookinst.book.title}}</a> ({{ bookinst.due_back }})        
-                        {% if perms.catalog.can_mark_returned %}- <a href="{% url 'renew-book-librarian' bookinst.id %}">Renew</a> / 
-                        <a href="{% url 'return-book' bookinst.id %}">Return</a>  {% endif %}
+                        {% if perms.catalog.can_mark_returned %}- <p class="clickable"><a href="{% url 'renew-book-librarian' bookinst.id %}">Renew</a> / 
+                        <a href="{% url 'return-book' bookinst.id %}">Return</a></p>  {% endif %}
                     </li>
                     {% endif %}
                 {% endfor %}

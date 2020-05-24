@@ -286,7 +286,7 @@ def auth_login(request):
         loginform = MyAuthenticationForm(request.POST)
         signupform = RegistrationForm(request.POST)
         
-        if loginform.is_valid() and 'login' in request.POST:
+        if 'login' in request.POST:
             
             username = request.POST.get('username')
             password = request.POST.get('password')

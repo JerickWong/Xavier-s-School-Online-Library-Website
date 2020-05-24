@@ -2,6 +2,18 @@
 
 {% block content %}
 
+<div id="workwrap">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-lg-offset-3">
+        <h4>Online Library</h4>
+        <h1>Xavier's School</h1>
+      </div>
+    </div>
+  </div>
+  <!-- /container -->
+</div>
+
   {% if user.is_athenticated or perms.catalog.view_bookinstance %}
     <h1>Borrow: {{ book_instance.book.title }}</h1>
     
