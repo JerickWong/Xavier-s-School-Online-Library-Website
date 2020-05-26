@@ -49,7 +49,6 @@
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
           <li><a href="{% url 'index' %}">Home</a></li>
-          <li><a href="{% url 'about' %}">About</a></li>
           <li><a href="{% url 'books' %}" class="smoothscroll">Books</a></li>
           {% if user.is_authenticated %}
             <li><a href="{% url 'profile' %}">{{ user.get_username }}</a></li>
@@ -68,32 +67,6 @@
   </div>
 
     {% block content %}{% endblock %}
-
-  <div id="social">
-    <div class="container">
-      <div class="row centered">
-        <div class="col-lg-2">
-          <a href="#"><i class="fa fa-dribbble"></i></a>
-        </div>
-        <div class="col-lg-2">
-          <a href="#"><i class="fa fa-facebook"></i></a>
-        </div>
-        <div class="col-lg-2">
-          <a href="#"><i class="fa fa-twitter"></i></a>
-        </div>
-        <div class="col-lg-2">
-          <a href="#"><i class="fa fa-linkedin"></i></a>
-        </div>
-        <div class="col-lg-2">
-          <a href="#"><i class="fa fa-instagram"></i></a>
-        </div>
-        <div class="col-lg-2">
-          <a href="#"><i class="fa fa-tumblr"></i></a>
-        </div>
-
-      </div>
-    </div>
-  </div>
 
   <div id="copyrights">
     <div class="container">

@@ -8,22 +8,29 @@
       <div class="col-lg-6 col-lg-offset-3">
         <h4>Online Library</h4>
         <h1>Books</h1>
+		<h4>Book Details</h4>
       </div>
     </div>
   </div>
   <!-- /container -->
 </div>
 
+<div class="container">
+  <div class="row centered mt mb">
+    <div class="col-lg-8 col-lg-offset-2">
+	
   <h1>Book List</h1>
   <!-- <p>{{perms.catalog}}</p> -->
 {% if not user.is_authenticated or perms.catalog.view_book %}
 
   {% if book_list %}
+  <br>
   <ul>
     {% for book in book_list %}
       <li>
         <a href="{{ book.get_absolute_url }}">{{ book.title }}</a> ({{book.author}})
       </li>
+	  <br>
     {% endfor %}
   </ul>
   {% else %}
@@ -51,4 +58,9 @@
 {% else %}
   <p>You don't have access to view this page.</p>
 {% endif %}
+
+ </div>
+ </div>
+</div>
+
 {% endblock %}

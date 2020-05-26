@@ -14,19 +14,33 @@
   <!-- /container -->
 </div>
 
+<div class="container">
+  <div class="row centered mt mb">
+    <div class="col-lg-8 col-lg-offset-2">
+	
   {% if user.is_athenticated or perms.catalog.view_bookinstance %}
     <h1>Borrow: {{ book_instance.book.title }}</h1>
-    
-    
-      
+    <br>
+	
     <form action="" method="post">
       {% csrf_token %}
+	  <div class="col-lg-8 col-lg-offset-3">
       <table>
       {{ form.as_table }}
-      </table>
+      </table><br><br>
+	  </div>
+	  <div class="col-lg-8 col-lg-offset-2">
       <input type="submit" value="Submit">
+	  </div>
     </form>
+	
+	
   {% else %}
-    <p>You cannot borrow the book. Log-in as student/teacher first.</p>
+    <p>You cannot borrow the book. Log-in as student / teacher first.</p>
   {% endif %}
+  
+ </div>
+ </div>
+ </div>
+ 
 {% endblock %}

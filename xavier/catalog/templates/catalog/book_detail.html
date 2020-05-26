@@ -12,6 +12,11 @@
   </div>
   <!-- /container -->
 </div>
+
+<div class="container">
+  <div class="row centered mt mb">
+    <div class="col-lg-8 col-lg-offset-2">
+	
   <h1>{{ book.title }}</h1>
 
   <br>
@@ -21,7 +26,7 @@
   <p><strong>ISBN:</strong> {{ book.isbn }}</p> 
   <p><strong>Publisher:</strong> {{ book.publisher }}</p>  
   <p><strong>Published Date:</strong> {{ book.date_published }}</p>
-  <p><strong>Genre:</strong> {{ book.genre.all|join:", " }}</p>  
+  <p><strong>Genre:</strong> {{ book.genre.all|join:", " }}</p> <br>
   <p><strong>Reviews: </strong></p>
 
   <div style="margin-left:20px;margin-top:20px">
@@ -35,8 +40,8 @@
       <p class="clickable"><a href="{% url 'book-review' book.id %}">Add a review</a></p>
     {% endif %}
   </div>
-
-  <div style="margin-left:20px;margin-top:20px">
+	<br> <br>
+  <div style="margin-left:20px;margin-top:20px"> 
     <h4>Copies</h4>
 
     {% for copy in book.bookinstance_set.all %}
@@ -56,4 +61,9 @@
   {% else %}
     <p>You don't have access to view this page.</p>
   {% endif %}
+
+</div>
+</div>
+</div>  
+ 
 {% endblock %}

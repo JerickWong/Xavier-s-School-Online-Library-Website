@@ -14,7 +14,10 @@
     <!-- /container -->
   </div>
 
-    
+<div class="container">
+  <div class="row centered mt mb">
+    <div class="col-lg-8 col-lg-offset-2">
+	
     {% if user.is_authenticated %}
         <br>
         <p>Username: {{ user.username }}</p>
@@ -22,6 +25,7 @@
         <p>Last name: {{ user.last_name }}</p>
         <p>Email: {{ user.email }}</p>
         <p>ID Number: 11717777</p>
+		<br>
         <p class="clickable"><a href="{% url 'password_change' %}">Change password?</a></p>
         <p></p>
         
@@ -30,13 +34,13 @@
             
             <br>
             {% if bookinstance %}
-            <p>Books Borrowed:</p>
+            <p>Books Borrowed:</p> <br>
             <ul>                
                 {% for borrowed in borrowedbefore %}
                     {% if borrowed.borrower == user %}
                     <li class='text-secondary'>
                         {{ borrowed.book.title }} (Returned)
-                    </li>
+                    </li> <br>
                     {% endif %}
 
                 {% endfor %}
@@ -47,24 +51,24 @@
                         <a href="{% url 'book-detail' bookinst.book.pk %}">{{bookinst.book.title}}</a> ({{ bookinst.due_back }})        
                         {% if perms.catalog.can_mark_returned %}- <p class="clickable"><a href="{% url 'renew-book-librarian' bookinst.id %}">Renew</a> / 
                         <a href="{% url 'return-book' bookinst.id %}">Return</a></p>  {% endif %}
-                    </li>
+                    </li> <br>
                     {% endif %}
                 {% endfor %}
-            </ul>
+            </ul> 
 
             {% else %}
                 <p>There are no books borrowed.</p>
             {% endif %}       
 
             <br>
-            <p>Books Reviewed:</p>             
+            <p>Books Reviewed:</p> <br>            
             {% for b in booksreviewed %}
                 {%  for r in b.reviews.all %}
                     {% if r.reviewer == user %}
                     <ul>
                         <p>Title: {{ b.title }}</p>
-                        <li>{{ r.review }}</li>
-                    </ul>
+                        <li>{{ r.review }}</li> <br>
+                    </ul> 
                     {% endif %}
                 {%  endfor %}
             {% endfor %}
@@ -72,5 +76,10 @@
         {% endif %}
     {% else %}
       <p>Login first</p>
-    {% endif %}       
+    {% endif %} 
+
+</div>
+ </div>
+</div>
+	
 {% endblock %}
